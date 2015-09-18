@@ -1,0 +1,57 @@
+%!TEX root=ndma.tex
+
+In order to introduce the presented topic, in this section we discuss an application of nominal automata to distributed systems. Consider an idealized \emph{peer-to-peer} system where each peer receives queries from an arbitrary, unbounded number of other peers, represented by an infinite set of unique identifiers. Each peer buffers requests in a finite queue. Then one query is selected, among the buffered ones, and is served by establishing a temporary connection with the target. Peers are not normally supposed to terminate, thus their relevant properties ought to predicate on infinite words. On the other hand, actions executed by peers carry information about other peers, which are drawn from an infinite set, therefore the symbols constituting words are infinite. Finally, each peer has finite memory. This is the key to maintain decidability, and is mathematically modeled by the notion of \emph{finite support} in nominal automata. Once established that our languages are made of infinite words over an infinite alphabet, but retain a finite memory property, we can use automata to characterize properties of local peers in a global environment. 
+%
+We assume three kinds of observable actions for peers: arrival of a new query from $p$, written $q(p)$; selection of a query to serve and connection to its sender $p$, written $s(p)$; disconnection from $p$, written $d(p)$.
+
+
+Variants of a communication protocol in this setting may have very different behaviors. Policies characterizing desired ones, for instance fairness requirements, can be specified by automata. For decidability reasons, policies should be \emph{deterministic}: they should always consider all possible actions from a given state, even if not all of them will be accepted, and each action should have a unique outcome. 
+%
+Our main example will be the specification of a ``first come first serve'' peer selection policy for queries, named \emph{FCFS fair policy}; we shall also discuss a policy that takes into account a number of locally identified ``friend peers'' taking priority over the others, that we call \emph{friend policy}. 
+
+\emph{FCFS fair policy.}
+We model query selection by a \emph{fair} FCFS discipline: queries from already buffered peers are discarded. We assume that the buffer has size $n$. 
+%
+%
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[->,shorten >=1pt,auto,node distance=2.8cm,semithick,initial text={},scale=1, every node/.style={scale=1}]
+
+  \node[state,initial] (q0) {$q_0$}; 
+  \node[state,right=10ex of q0] (q1) {$q_1$};
+  \node[state,right=10ex of q1] (q2) {$q_2$};
+  \node[right=10ex of q2] (dots) {$\dots$};
+  \node[state,right=10ex of dots] (qn) {$q_n$};
+
+  \node[state,below=6ex of q1] (s1) {$s_1$};
+  \node[state,below=6ex of q2] (s2) {$s_2$};
+  \node[below=10ex of dots] (dotss) {$\dots$};
+  \node[state,below=6ex of qn] (sn) {$s_n$};
+
+
+  \path (q0) edge node[inner sep=1pt,above] {\lab{q(\star)}} node[inner sep=1pt,below] {\lab{enq_1}} (q1);
+  \path (q1) edge node[inner sep=1pt,above] {\lab{q(\star)}} node[inner sep=1pt,below] {\lab{enq_2}} (q2);
+  \path (q2) edge node[inner sep=1pt,above] {\lab{q(\star)}} node[inner sep=1pt,below] {\lab{enq_3}}  (dots);
+  \path (dots) edge node[inner sep=1pt,above] {\lab{q(\star)}} node[inner sep=1pt,below] {\lab{enq_n}} (qn);
+
+  \path (q1) edge node[inner sep=1pt,left] {\lab{s(1)}} node[inner sep=1pt,right] {\lab{id}} (s1);
+  \path (q2) edge node[inner sep=1pt,left] {\lab{s(1)}} node[inner sep=1pt,right] {\lab{id}} (s2);
+  \path (qn) edge node[inner sep=1pt,left] {\lab{s(1)}} node[inner sep=1pt,right] {\lab{id}} (sn);
+  \path (qn) edge[loop right] node[inner sep=4pt,above] {\lab{q(\star)}} node[inner sep=4pt,below] {\lab{id}} (qn);
+
+  \path (s1) edge node[inner sep=1pt,left] {\lab{d(1)}} node[inner sep=1pt,right] {\lab{deq_1}} (q0);
+  \path (s2) edge node[inner sep=1pt,left] {\lab{d(1)}} node[inner sep=1pt,right] {\lab{deq_2}} (q1);
+  \path (sn) edge node[inner sep=1pt,left] {\lab{d(1)}} node[inner sep=1pt,right] {\lab{deq_n}} (dots);
+
+
+\end{tikzpicture}
+\caption{Automaton for the FCFS policy.}
+\label{fig:fcfs}
+\vskip -10pt
+\end{figure}
+%
+The automaton is shown in \autoref{fig:fcfs}. Each state $q_i,s_i$ is equipped with $i$ registers, for $i=1,\dots,n$, and $q_0$ has no registers. Registers can store identifiers, and are local to states (we will discuss this aspect throughout the paper), thus each transition is equipped with a function expressing how registers in the target state take values from those of the source state. We have two such functions: $enq_i(x)$, mapping $i$ to $\star$ and $x < i$ to $x$, and $deq_i$, mapping $x$ to $x+1$.
+%
+The intuition is that transitions from $q_i$ to $q_{i+1}$ labeled with $\star$ correspond to buffering a ``fresh'' query, from a peer whose identiy is not already known, and thus it is stored in register $i+1$. The loop on $q_n$ discards new peers when the buffer is full. The transition from $q_i$ to $s_i$ picks the query $p$ from register $1$, that is always the oldest one, and establishes a connection to $p$; the transition from $s_i$ to $q_{i-1}$ removes $p$ from the buffer, and shifts the registers' content so that register $1$ contains the query that arrived right after the one of $p$. Our automaton should (1) be deterministic and (2) have a Muller-style accepting condition. For (1), we assume each state has all possible outgoing transitions: those not shown in \autoref{fig:fcfs} are assumed to go to a sink state. For (2), we take all subsets of the states, excluding the sink one, as Muller sets; that is: behaviors that go through states and transitions depicted in \autoref{fig:fcfs} are all accepted. 
+
+\emph{Friend queries.} A \emph{friend query} is a query coming from a ``friend'' peer, which should be served as soon as possible, that is: after the current query has been served. To model such scenarios, one can introduce an action $q_f(p)$ to model a friend query from $p$. An automaton that correctly handles such queries can be obtained from the one of \autoref{fig:fcfs} as follows: we add a transition from $q_i$ to $q_{i+1}$, for each $i=0,\dots,n-1$, labelled with $q_f(\star)$ and with the map $top_i$, sending $1$ to $\star$ and $x > 1$ to $x-1$; furthermore, a looping transition on $q_n$ is added with label $q_f(\star)$ and map $id$, which discards friend queries when the buffer is full. Intuitively, $top_i$ always stores the friend query in register $1$, so that transitions $s(1)$ will always pick it, and shifts the priority of all the other peers.

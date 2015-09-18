@@ -1,0 +1,220 @@
+%!TEX root=ndma.tex
+
+\begin{proof}[of \cref{thm:languages-finitely-supported}]
+% Let $2=\{0,1\}$ with $\pi\cdot 0 = 0$, $\pi\cdot 1 = 1$, thus $\supp(0)=\supp(1)=\emptyset$. Let $h : Q \times \names^\omega \to 2$ be such that $h(q,\alpha) = 1$ if and only if $\alpha \in \Lang_q$. 
+By properties of nominal sets, for $x$ finitely supported and $f$ equivariant, $f(x)$ is finitely supported with $\supp(f(x))\subseteq \supp(x)$. Let $h : Q \to \Pow(\names^\omega)$ be the function mapping each $q$ to $\Lang_q$. We need to show that $h$ is equivariant, that is, $h(\pi \cdot q) = \{ \pi \cdot \alpha \mid \alpha \in \Lang_q\}$. Without loss of generality, we shall prove the right-to-left inclusion. Then, since $\pi$ and $q$ are arbitrary, one can prove the left-to-right inclusion starting from the state $\pi \cdot q$ and the permutation $\pi^{-1}$. Let $\alpha \in \Lang_q$. We shall prove that $\pi\cdot\alpha \in \Lang_{\pi\cdot q}$. Consider the unique (accepting) run $r$ of $\alpha$ from $q$, and  the unique run $r'$ of $\pi \cdot \alpha$ from $\pi \cdot q$. By equivariance of the transition function, and definition of run, for all $i$, we have $r'_i = \pi \cdot r_i$, thus $\orb(r'_i)=\orb(r_i)$, therefore $\Inf(r')= \Inf(r)$. 
+\qed 
+\end{proof}
+%
+\begin{proof}[of \cref{lem:deterministic-configuration-graph}]
+ For each $a$, if $a \in \Im(\rho_1)$, recalling that $\rho_1$ is injective, there is $l \in \weight{q_1}$ with $\rho_1(l) = a$. By definition of \hdma, there is exactly one transition labelled with $l$, let it be $q_1 \htr{l}{\sigma} q_2$. Then by definition of configuration graph, we have $(q_1,\rho_1) \tr a (q_2,\rho_1 \circ \sigma)$. Since $\rho_1$ is injective, there can not be other transitions labelled with $a$ in the configuration graph. If $a \notin \Im(\rho_1)$, consider the only transition with label $\star$ from $q_1$, namely $q_1 \htr{\star}{\sigma} q_2$.  Then we have $(q_1,\rho_1) \tr a (q_2,(\rho_1 \circ \sigma)\sub{a}{\sigma^{-1}(\star)})$ in the configuration graph; this transition is unique by definition.
+\end{proof}
+
+
+\begin{proof}[of \autoref{pro:nset-to-nom-and-back}]
+ Fix an hDMA $A$. To find the corresponding nDMA, observe that the configuration graph of $A$, equipped with the permutation action $\pi \cdot (q,\rho) = (q,\pi \circ \rho)$ forms the transition structure of an nDMA. The orbits of the obtained nDMA are in one to one correspondence with states in $Q$; thus the acceptance condition on states can be used as an acceptance condition on the orbits of the configuration graph. When the configuration $(q_0,\rho_0)$ is chosen as initial state, the obtained nDMA accepts the same language as $A$.
+ 
+ A run $\run$ in the configuration graph clearly is also a run in the obtained automaton. As $\orb(q,\rho) = \{(q,\rho')\mid \rho' : \weight{q} \inj \names \}$, also acceptance is the same on both sides. By \cref{lem:deterministic-configuration-graph} we get determinism. The proof is completed by noting that the obtained transition function is equivariant. For this, chose an edge $(q_1,\rho_1) \tr{a} (q_2,\rho_2)$ in the configuration graph, and look at \cref{def:configuration-graph}, thus consider a corresponding \hdma\ transition $q_1 \htr{l}{\sigma} q_2$. The case when $l \in \weight{q_1}$ is straightforward. When $l=\star$, thus $(q_1,\rho_1) \tr a (q_2,(\rho_1 \circ \sigma)\sub{a}{\sigma^{-1}(\star)})$ consider the permuted configuration $(q_1,\pi\circ\rho_1)$,  for any permutation $\pi$. Since $a \notin \Im(\rho_1)$, also  $\pi(a) \notin \Im (\pi\circ\rho_1)$, thus we have a transition $(q_1,\pi\circ\rho_1)\tr{\pi(a)}(q_2,(\pi \circ \rho_1\circ \sigma)\sub{\pi(a)}{\sigma^{-1}(*)})$, which is precisely the required permuted transition. 
+
+For the other direction, fix an nDMA $(Q,\tr{},q_0,\acc)$. 
+for $q \in Q$ , let $o_q$ be a chosen canonical representative of $\orb(q)$, $o_{S \subseteq X} = \{o_q \mid q \in S\}$ and $\rho_q$ be a chosen permutation such that $\rho_q \cdot o_q = q$.	Construct the \hdma\  $(o_Q,\weight-,\htr{}{},o_{q_0},\restr{\rho_{q_0}}{\weight{o_{q_0}}},\{ \{ o_q \mid q \in A\} \mid A \in \acc \})$, 
+%
+with $\weight{o_q} = \supp(o_q)$. For each nDMA transition $o_{q_1} \tr a o_{q_2}$, if $a \in \supp(o_{q_1})$, let $o_{q_1} \htr{a}{\sigma} o_{q_2}$; otherwise, let $o_{q_1} \htr{\star}{\sigma_\star} o_{q_2}$, where $\sigma=\restr{\rho_{q_2}}{\weight{o_{q_2}}}$ and $\sigma_\star = \restr{\sigma_{q_2}\sub{*}{a}}{\weight{o_{q_2}}}$. The defined hDMA accepts the same language as the original nDMA.
+
+The proof is similar to the equivalence results between categories of coalgebras given in \cite{CianciaM10}. First, we need to show that, for each transition $q_1 \tr a q_2$ in the original nDMA, there is an edge $(o_{q_1},\restr{\rho_{q_1}}{\weight{q_1}}) \tr a (o_{q_2},\restr{\rho_{q_2}}{\weight{q_2}})$ in the configuration graph of the derived \hdma. We look at the case $a \in \supp(q_1)$; the case with allocation is similar, even though technically more involved. By equivariance, from $q_1 \tr a q_2$, we have $o_{q_1} \tr{\rho^{-1}_{q_1} (a)} \rho^{-1}_{q_1}(q_2)$. Then we have an \hdma\ transition $o_{q_1} \htr{\rho^{-1}_{q_1}(a)}{\sigma} o_{q_2}$ where $\sigma = \restr{\rho_{\rho^{-1}_{q_1}(q_2)}}{\weight{o_2}}$. 
+By looking at the used permutations, we have $\sigma = \restr{\rho^{-1}_{q_1} \circ \rho_{q_2}}{\weight{o_2}}$. 
+Then, in the configuration graph, we have $(o_{q_1},\mathit{id}) \tr{\rho^{-1}_{q_1}(a)} (o_{q_2},\sigma)$, thus by equivariance, we have 
+$(o_{q_1},\restr{\rho_{q_1}}{\weight{q_1}}) \tr a (o_{q_2},\rho_{q_1} \circ 
+\restr {\rho^{-1}_{q_1} \circ \rho_{q_2}}{\weight{q_2}})$, 
+thus $(o_{q_1},\restr{\rho_{q_1}}{\weight{q_1}}) \tr a (o_{q_2},\restr{\rho_{q_2}}{q_2})$. Accordance of the accepting conditions is straightforward.
+\qed
+\end{proof}
+
+
+\begin{proof}[of \cref{prop:edges-correspondence}]
+Let $C = ((q_1,q_2,R),\rho)$ and $\cproj_i(C) = (q_i,\rho_i)$, $i=1,2$.
+
+\paragraph{Part \eqref{sync-to-each}.}
+ 
+Let $C' = ((q_1',q_2',R'),\rho')$ and let 
+\[
+	(q_1,q_2,R) \syncHtr{l}{\sigma} (q_1',q_2',S)
+\] 
+be the transition inducing $C \tr{a} C'$. We proceed by cases on the rule used to infer this transition:
+\begin{itemize}
+	\item (\textsc{Reg}): then the transition is inferred from $q_i \htrind{l_i}{\sigma_i}{i} q_i'$, $i=1,2$, such that either $l_1$ or $l_2$ is in $\names$. Suppose, w.l.o.g., $l_1 \in \names$. Then $l = [l_1]_{R^*}$ and $\rho_i(l_1) = \rho([l_1]_{R^*}) = a$, so there is an edge $(q_1,\rho_1) \trind{a}{1} (q_1',\rho_1')$ in the configuration graph of $\tstr_1$. The following chain of equations shows that $\pi_1(C') = (q_1',\rho'_1)$:%we have
+	\begin{equation}
+		\label{eq:rho}
+		\begin{gathered}
+			\begin{array}{rl}
+				\rho'_1(x) &= \rho_1 (\sigma_1 (x) ) \\
+				&= \rho([\sigma_1(x)]_{R^*}) \\
+				%&& \text{(by definition of $\rho_i$)}\\
+				&= \rho(\sigma_r([x]_{S^*})) \\
+				%&& \text{(by definition of $\sigma$)}\\
+				&= \rho'([x]_{S^*}) 
+				%&& \text{(by definition of $\rho'$)}
+			\end{array}
+		\end{gathered}
+		\tag{$\dagger$}
+	\end{equation}
+	To prove the existence of an edge $(q_2,\rho_2) \trind{a}{2} (q_2',\rho_2')$ in the configuration graph of $\tstr_2$, we have to consider the following two cases:
+	\begin{itemize}
+		\item If $l_2 \in \names$, then $\rho_2(l_2) = \rho([l_2]_{R^*}) = \rho([l_1]_{R^*}) = a$, by the rule premise $[l_2]_{R^*} = \{l_1,l_2\}$;
+		%
+		\item If $l_2 = \star$, then $a$ should be fresh, so we have to check $a \notin \Im(\rho_2)$. Suppose, by contradiction, that there is $x \in \weight{q_2}_2$ such that $\rho_2(x) = a$, then $\rho([x]_{R^*}) = a = \rho([l_1]_{R^*})$, by definition of $\rho$, which implies $[x]_{R^*} = [l_1]_{R^*}$, by injectivity of $\rho$, i.e. $\{l_1,x\} \in [l_1]_{R^*}$, but the premise of the rule states $[l_1]_{R^*} = \{l_1,\star\} \cap \names = \{l_1\}$, so we have a contradiction. 
+	\end{itemize}
+	Now we have to check $\cproj_2(C') = (q_2',\rho_2')$. Since we have $\rho'_2(x) = (\rho_2 \circ \sigma_2)\sub{a}{\sigma_2^{-1}(\star)}(x)$, for $x \neq \sigma_2^{-1}(\star)$ the equations \eqref{eq:rho} hold. For $x =  \sigma_2^{-1}(\star)$ we have:
+	\begin{align*}
+		\rho'_2(x) &= (\rho_2 \circ \sigma_2)\sub{a}{x}(x) \\
+		&= a \\
+		&= \rho([l_1]_{R^*}) \\
+		&= (\rho \circ \sigma_r)([x]_{S^*}) \\
+		& = \rho'([x]_{S^*})
+	\end{align*}	
+	%All the equations just apply the definitions of the involved functions.
+	%so $\rho([l_1]_R) = \rho([l_2]_R)$, by injectivity of $\rho$.
+	%, but this means $, because $[l_1]_R = \{l_1\}$
+
+
+	\item \allrule: then we have $l=\star$ and the transition is inferred from $q_i \htrind{\star}{\sigma_i}{i} q_i'$, $i=1,2$. Since $a \notin \Im(\rho)$, we also have $a \notin \Im(\rho_i)$, so there are $(q_i,\rho_i) \trind{a}{i} (q_i',\rho_i')$ with $\rho_i' = (\rho_i \circ \sigma_i)\sub{a}{\sigma^{-1}_i(\star)}$, for $i=1,2$. Finally, we have to check that each $\rho_i'(x)$ is as required: if $x \neq\sigma_i^{-1}(\star)$ equations \eqref{eq:rho} hold; for $x=\sigma_i^{-1}(\star)$ we have
+	\begin{align*}
+		\rho'_i(x) &= (\rho_i \circ \sigma_i)\sub{a}{x}(x) \\
+		&= a \\
+		&= (\rho \circ \sigma_a) \sub{a}{\sigma_a^{-1}(\star)}(\sigma_a^{-1}(\star)) \\
+		&= (\rho \circ \sigma_a) \sub{a}{[x]_{S^*}}([x]_{S^*}) \\
+		%&& \text{(by $[\sigma_1^{-1}(\star)]_{S^*} = [\sigma_i(\star)^{-1}]_{S^*}$)} \\
+		%& = (\rho \circ \sigma) \sub{a}{[\sigma_i^{-1}(\star)]_{S^*}}([\sigma_i^{-1}(\star)]_{S^*}) && \text{(definition of $R'$)} \\
+		&= \rho'([x]_{S^*})
+	\end{align*}
+	
+	%Then there are $q_i \htrind{l_i}{\sigma_i}{i} q_i'$, $i=1,2$. We have two cases:
+%	\begin{itemize}
+%		\item 
+%	\end{itemize}
+\end{itemize} 
+
+
+\paragraph{Part \eqref{each-to-sync}.} 
+Since $\tstr_1 \syncp \tstr_2$ is deterministic, there certainly is $C \tr{a} C'$, for any $a \in \names$. This edge, by the previous part of the proof, has a corresponding edge $\cproj_i(C) \trind{a}{i} \cproj_i(C')$, for each $i=1,2$. But then $\cproj_i(C') = C_i$, by determinism of $\tstr_i$.
+%Then we must have $\pi(C') = C_i$
+
+% edge in the configuration graph of $\tstr_i$
+\qed
+\end{proof}
+
+\begin{proof}[of \cref{thm:bool-closure}]
+We just consider $\Lang_1 \cap \Lang_2$, the other cases are analogous. Let $\autom_\cap$ be $(\tstr_1 \syncp \tstr_2,\acc_\cap)$; this is a proper \hdma{}, thanks to \cref{rem:syncp-fin-det}. Given $\alpha \in \names^\omega$, let $r_\cap$,$r_1$ and $r_2$ be the runs for $\alpha$ in the configuration graphs of $\autom_\cap,A_1$ and $A_2$, respectively. Then, by \cref{thm:inf-correspondence}, we have $\cproj_i(\Inf(r_\cap)) = \Inf(r_i)$, for each $i=1,2$. From this, and the definition of $\acc_\cap$, we have that $\Inf(r_\cap) \in \acc_\cap$ if and only if $\Inf(r_1) \in \acc_1$ and $\Inf(r_2) \in \acc_2$, i.e.\ $\alpha \in \Lang_{\autom_\cap}$ if and only if $\alpha \in \Lang_{\autom_1}$ and $\alpha \in\Lang_{\autom_2}$.
+\qed
+\end{proof}
+%
+\begin{proof}[of \cref{thm:decidable}]
+Let $A = (Q,\weight{-},q_0,\rho_0,\htr{}{},\acc)$ be a \hdma{} for $\Lang$. Consider the set $\Sigma_A = \{ (l,\sigma) \mid \exists q,q' \in Q : q \htr{l}{\sigma} q' \}$. This is finite, so we can use it as the alphabet of an ordinary deterministic Muller automaton $M_A = (Q \cup \{\delta\}, q_0,\tr{}_s,\acc)$, where $\delta \notin Q$ is a dummy state, and the transition function is defined as follows: $q \tr{(l,\sigma)}_s q'$ if and only if $q \htr{l}{\sigma} q'$, and $q \tr{(l,\sigma)}_s \delta$ for all other pairs $(l,\sigma) \in \Sigma_A$. Clearly $\Lang_{M_A} = \varnothing$ if and only if $\Lang = \varnothing$, as words in $\Lang_{M_A}$ are sequence of transitions of $A$ that go through accepting states infinitely often, and thus produce a word in $\Lang$, and vice versa. The claim follows by decidability of emptiness for ordinary deterministic Muller automata. Finally, to check equality of languages, observe that the language $(\Lang_1 \cup \Lang_2) \setminus (\Lang_1 \cap \Lang_2 )$ is $\omega$-regular nominal, thanks to \cref{thm:bool-closure}. Then we just have to check its emptiness, which is decidable.
+\qed
+\end{proof}
+%
+%
+We give one straightforward lemma about configuration graphs.
+%
+\begin{lemma}
+\label{lem:tr-names}
+For all edges $(p_1,\rho_1) \tr{a} (p_2,\rho_2)$ we have $\Im(\rho_2) \subseteq \Im(\rho_1) \cup \{ a \}$.
+\end{lemma}
+%
+We give one additional lemma about $I$ defined in \cref{sec:up-words}.
+%
+\begin{lemma}
+\label{lem:xI}
+Given $x \in \dom(\widehat{\sigma})$, suppose there is a positive integer $k$ such that $x = \widehat{\sigma}^k (x)$. Then $x \in I$.
+\end{lemma}
+\begin{proof}
+Suppose $x \notin I$. $I = \widehat{\sigma}(I)$ implies $I = \widehat{\sigma}^k(I)$, so $I \cup \{x\} = \widehat{\sigma}^k(I \cup \{x\})$, but this is against the assumption that $I$ is the largest set satisfying $I = \widehat{\sigma}(I)$.
+\qed
+\end{proof}
+
+\begin{proof}[of \cref{lem:rho-forget}]
+%Suppose $|J_x| \geq n$, otherwise the statement is trivially true. 
+Observe that this sequence is such that $x_{kn} \neq x_{k'n}$, for all $k,k' \geq 0$ such that $k \neq k'$. In fact, suppose there are $x_{kn} = x_{k'n}$, with $k < k'$. Then we would have $x_{kn-1} = x_{k'n-1}$, because $\sigma_{n}$ is injective. In general, $x_{kn-l} = x_{k'n-l}$, for $0 \leq l \leq kn$, therefore $x = x_0 = x_{(k'-k)n}$. This means that $\widehat{\sigma}^{(k'-k)}(x) = x$ which, by \cref{lem:xI}, implies $x \in I$, against the hypothesis $x \in T$.
+
+Now, suppose that $J_x = \mathbb{N}$. Then we would have an infinite subsequence $\{x_{jn}\}_{j \in J_x}$ of pairwise distinct names that belong to $\weight{p_0}$, but $\weight{p_0}$ is finite, a contradiction.
+\qed
+\end{proof}
+
+
+\begin{proof}[of \cref{lem:idI}]\hfill
+
+\item Let $\pi \colon I \to I$ be the function $\restr{\widehat{\sigma}}{I}$ with its codomain restricted to $I$. Then $\pi$ is an element of the symmetric group on $I$, so it has an order $\id$, that is a positive integer such that $\pi^\id = id_I$. Hence $\restr{ \rrho_\id }{ I } =\restr{ \rrho_0 }{I} \circ \pi^\id = \restr{ \rrho_0 }{I}$.
+\qed
+\end{proof}
+
+\begin{proof}[of \cref{lem:forgetT}]
+Let $\mathcal{J}$ be
+\[
+	\mathcal{J} := \max \{ |J_x|\mid x \in T \} + 1 .
+\]
+This gives the number of transitions it takes to forget all the names assigned to $T$. Let $\forg$ be $\lceil \frac{\mathcal{J}}{n} \rceil$. For any $\gamma \geq \forg$, we can choose $v_0,\dots,v_{\gamma-1}$ as any $\gamma$-tuple of words that are recognized by the loop and such that, whenever $l_j = \star$, then $(v_i)_j$ is different from $\Im(\rrho_0)$ and all the previous symbols in $v_0,\dots,v_i$, for all $i=0,\dots,\gamma-1$ and $j=0,\dots,n-1$. Let us verify $\Im(\rrho_\gamma) \cap \rrho_0(T) = \varnothing$ separately on $I$ and $T$ (recall $I \cup T = \weight{p_0})$: we have $\rrho_\gamma(T) \cap \rrho_0(T) = \varnothing$, because all the names assigned to $T$ have been replaced by fresh ones; and we have $\rrho_\gamma(I) = \rrho_0(I)$, so $\rrho_\gamma(I) \cap \rrho_0(T) = \varnothing$.
+\qed
+\end{proof}
+
+
+\begin{proof}[of \cref{lem:initT}]
+For each name $x \in T$, define a tuple $(x,i,j)$ where $i$ is the index of the transition that consumes the fresh name that will be assigned to $x$, and $j$ is how many traversals of $L$ it takes for this assignment to happen (including the one where the transition $i$ is performed). Formally, $j$ is the smallest integer such that there are $x_{jn},\dots,x_i$ defined as follows
+\[
+	x_{jn} = x \qquad \sigma_\ul{k+1}(x_{k+1}) = x_k \qquad \sigma_i(x_i) = \star \enspace .
+\]
+Let $X$ be the set of such tuples and let $\ass := \max \{ j \mid (x,i,j) \in X \}$. Then we can construct $v_0,\dots,v_{\ass-1}$ as follows
+\[
+	(v_k)_i :=
+	\begin{cases}
+		\text{$y$ fresh} & l_i = \star \land i \notin \pi_2(X) \\
+		\rrho_0(x) & (x,i,\ass - k) \in X
+		 \\
+		%\trho_0(l_0) & l_0 \neq \star \\
+		\trho_{k}(l_i) & l_i \neq \star
+	\end{cases}
+\]
+%
+where by $y$ fresh we mean different from elements of $\Im(\trho_0) \cup \Im(\rrho_0)$ and previous symbols in $v_0,\dots,v_{k}$.
+
+The second case in the definition of $(v_k)_i$ is justified as follows. Suppose $\trho_{k,i}$ is the register assignment for $(p_i,\trho_{k,i}) \tr{(v_k)_i} \dots$, then we have to show $(v_k)_i = \rrho_0(x) \notin \Im(\trho_{k,i})$. Suppose, by contradiction, that $\rrho_0(x) \in \Im(\trho_{k,i})$, then by \cref{lem:tr-names} and by how we defined the symbols consumed we have $\rrho_0(x) \in \Im(\trho_0) \cup Y \cup \rrho_0(T')$, for some $T' \subseteq T$, and some set of fresh (in the mentioned sense) names $Y$.
+%, where $F$ are all the fresh names consumed so far. In particular, $F$ is made of globally fresh names
+%But $F \cap \Im(\rrho_0) = \varnothing$, 
+But $\rrho_0(x) \notin Y$, by construction, and $x$ cannot already be in $T'$, because there cannot be two distinct tuples in $X$ that coincide on the first component. Therefore we must have
+$\rrho_0(x) \in \Im(\trho_0)$, which implies $\rrho_0(T) \cap \Im(\trho_0) \neq \varnothing$, because $x \in T$, but this contradicts our hypothesis.
+% \cap \Im(\rrho_0) = \varnothing$
+
+It is easy to check that this constructions reaches a configuration where all $x \in T$ have been assigned the desired value. 
+% $\trho_\ass$ satisfies the statement by construction.\todo{Dire meglio?}
+\qed
+\end{proof}
+
+
+\begin{proof}(of \autoref{thm:loop})
+We can take any path of the form
+\[
+	(p_0,\rrho_0) \TrP{v_0}{L} (p_0,\rrho_1) \TrP{v_1}{L} \cdots \TrP{v_{\gamma-1}}{L} (p_0,\rrho_\gamma) \TrP{v_{\gamma}}{L} \cdots \TrP{v_{\gamma + \ass - 1}}{L} (p_0,\rrho_{\gamma + 
+	 \ass})
+\]
+where the part from $(p_0,\rrho_0)$ to $(p_0,\rrho_\gamma)$ is given by \cref{lem:forgetT} and the remaining subpath is given by \cref{lem:initT}, with $\trho_0 = \rrho_\gamma$. The only constraint about $\gamma$ is that there should be a positive integer $\lambda$ such that $\gamma + \ass = \lambda \id$, where $\id$ is given by \cref{lem:idI}. The claim follows from $\restr{\rrho_{\gamma + \ass}}{T} = \restr{\rrho_0}{T}$ and 
+$\restr{\rrho_{\gamma + \ass}}{I} = \restr{\rrho_0}{I}$ which, together with $I \cup T = \weight{p_0}$, imply $\rrho_{\gamma + \ass} = \rrho_0$.
+\qed
+\end{proof}
+
+\begin{proof}(of \autoref{thm:up-fragment})
+Let $\autom$ be the automaton for $\Lang$. Take any $\alpha \in \Lang$ and let $I = \Inf(r^\alpha)$ (recall $r^\alpha$ is the run for $\alpha$ in $\autom$), so $I \in \acc$. A path spelling $\alpha$ in the configuration graph of $A$ must begin with
+$
+	(q_0,\rho_0) \Tr{u} (q_1,\rho_1) \TrP{v}{P} (q_1,\rho_2),
+$
+where $q_1 \in I$ and $(q_1,\rho_1) \TrP{v}{P} (q_2,\rho_2)$ is such that $P$ goes through all the states in $I$. Since $P$ is a loop, we can replace its induced path with a new one given by \cref{thm:loop} 
+$
+	(q_0,\rho_0) \Tr{u} (q_1,\rho_1) \TrP{v_0}{P} \cdots \TrP{v_n}{P} (q_1,\rho_1).
+$
+The subpath from $(q_1,\rho_1)$ can be traversed any number of times, so we have $u(v_0\dots v_n)^\omega \in \Lang$.
+\qed
+\end{proof}
+
+\begin{proof}(of \autoref{thm:up-determinacy})
+The proof mimics the one from \cite{CalbrixNP93}. Assume $\Lang_1 \neq \Lang_2$ and consider the language $(\Lang_1 \cup \Lang_2) \setminus (\Lang_1 \cap \Lang_2)$. By \cref{thm:bool-closure}, this is a nominal $\omega$-regular language (set difference can be expressed via intersection and complement)  and, by $\Lang_1 \neq \Lang_2$, it is not empty, so by \cref{thm:up-fragment} it contains at least one ultimately periodic word, which implies $UP(\Lang_1) \neq UP(\Lang_2)$. \qed
+\end{proof}
+
+\end{document}

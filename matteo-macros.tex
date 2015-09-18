@@ -1,0 +1,56 @@
+%\usepackage{cleveref}
+\usepackage[hidelinks]{hyperref}
+\newcommand{\cref}[1]{\autoref{#1}}
+\usepackage{todonotes,mathpartir,enumerate,nicefrac}
+\usepackage[all]{xy}
+\usepackage[utf8]{inputenc}
+
+\SelectTips{cm}{}
+
+\DeclareMathOperator{\dom}{dom}
+
+\newcommand{\todosm}[1]{\todo[size=\tiny]{#1}}
+
+\newcommand{\autom}{A}
+\newcommand{\hdma}{hDMA}
+\newcommand{\hdmas}{\hdma s}
+
+% Transition arrows
+\newcommand{\Trarrow}{\Longrightarrow}
+\newcommand{\Tr}[1]{\overset{#1}{\Trarrow}}
+\newcommand{\TrP}[2]{\Tr{#1}_{#2}}
+\newcommand{\htrind}[3]{\overset{#1}{\underset{#2}{\trarrow_{#3}}}}
+\newcommand{\trind}[2]{\overset{#1}{\trarrow_{#2}}}
+
+\newcommand{\pto}{\rightharpoonup}
+\newcommand{\ul}[1]{{\underline{#1}}}
+\newcommand{\restr}[2]{\ensuremath{\left.#1\right|_{#2}}}
+\newcommand{\syncp}{\otimes}
+
+\newcommand{\tstr}{\mathcal{T}}
+
+
+% Symbols for ultimately periodic words
+\newcommand{\regPerm}{I}
+\newcommand{\regForg}{T}
+\newcommand{\id}{\theta}
+\newcommand{\forg}{\epsilon}
+\newcommand{\ass}{\zeta}
+
+\newcommand{\rrho}{\hat{\rho}}
+\newcommand{\trho}{\tilde{\rho}}
+
+\newcommand{\subs}[2]{\nicefrac{#1}{#2}}
+
+\newcommand{\lab}[1]{{${\scriptstyle #1}$}}
+
+%% Box
+\newcommand{\tbox}[2]{
+\medskip
+\noindent%
+\marginpar{#1}%
+\fbox{%
+\parbox{\linewidth}{#2}
+}%
+\medskip
+}
