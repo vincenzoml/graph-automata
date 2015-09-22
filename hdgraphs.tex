@@ -1,0 +1,47 @@
+%!TEX root=main.tex
+\paragraph{Notation} Given a relation (e.g.\ a graph) $R$, we write $x \in R$ whenever $x$ belongs to the carrier of $R$, $X \subseteq R$ whenever $x \in R$,, for each $x \in X$, and $R' \subrel R$ whenever $R'$ is a sub-relation of $R$, i.e., $xR'y$ implies $xRy$, for all $x,y \in R'$.
+
+Given a state $q$, $Lab(q)$ are the possible outgoing labels:
+\[
+	Lab(q) = \reg{q} \cup \{ \star_S \mid S \subseteq \reg{q} \}
+\]
+where $\star_S$ stands for any fresh vertex connected to those in $S$.
+\footnote{
+Se il grafo è diretto abbiamo bisogno di una stellina più complicata: $\star_{I,O}$, dove $I$ sono i vertici con nuovi archi verso $\star$ e $O$ quelli con nuovi archi da $\star$.
+}
+
+\begin{definition}
+\label{hdg}
+ A \emph{deterministic history-dependent Muller automaton over \nomG} (\nomG-ndMa) is a tuple $(Q,\reg{\cdot},\htr{}{},q_0,\rho_0,A)$ where:
+ 
+  \begin{itemize}
+  \item $Q$ is a finite set of states and $q_0 \in Q$ is the \emph{initial state};
+%  
+	\item $\reg{\cdot}$ assigns to each state $q \in Q$ a finite graph;
+  \item $A \subseteq \Pow(Q)$ is a a Muller accepting set;
+%  
+ \item $\htr{}{}$ is the transition relation, of the form
+\[
+	q \htr{\sigma}{l} q'
+\]
+where $l \in Lab(q)$ and $\sigma \colon \reg{q'} \to \reg{q} \cup \{ l \}$ is a (\emph{history}) map such that, whenever $x \reg{q'} y$:
+\begin{itemize} 
+	\item if $\sigma(x) \neq \star_S \neq \sigma(y)$ then $\sigma(x) \reg{q} \sigma(y)$;
+	\item if $\sigma(x) = \star_S$ then $\sigma(y) \in S$ (and the other way around).
+\end{itemize}	
+%
+\item $\rho_0 \colon \reg{q_0} \to \nomG$ is the \emph{initial assignment} to registers of $q_0$;
+%  
+\item the transition relation is \emph{deterministic}, that is: for each $q \in Q$ and $l \in Lab(q)$ there is exactly one transition with source $q$ and label $l$;
+%  
+%\item the transition relation is \emph{equivariant}, that is, invariant under permutations: there is a transition $q_1 \tr a q_2$ if and only if, for all $\pi$, also the transition $\pi \cdot q_1 \tr{\pi(a)} \pi \cdot q_2$ is present.
+\end{itemize}	
+\end{definition}
+
+\begin{example}
+The language of all finite paths from $a$ to $b$.
+\[
+	\Lang = \{ a v_1 \dots v_n b \mid \edge{a}{b}, \edge{v_i}{v_{i+1}}, \edge{v_n}{b}, 1 \leq i \leq n-1 \}
+\]	
+\end{example}
+

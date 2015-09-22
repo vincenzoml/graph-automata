@@ -60,37 +60,42 @@
 \begin{document}
 
  \begin{abstract}
-Process calculi for service-oriented computing often feature generation of fresh resources. So-called nominal automata have been studied both as semantic models for such calculi, and as acceptors of languages of finite words over infinite alphabets. In this paper we investigate nominal automata that accept infinite words. These automata are a generalisation of deterministic Muller automata to the setting of nominal sets. We prove decidability of complement, union, intersection, emptiness and equivalence, and determinacy by ultimately periodic words. The key to obtain such results is to use finite representations of the (otherwise infinite-state) defined class of automata. The definition of such operations enables model checking of process calculi featuring infinite behaviours, and resource allocation, to be implemented using classical automata-theoretic methods.
 \end{abstract}
 
 \maketitle
 
-\section{Introduction}\label{sec:introduction}\input{introduction}
+\section{\nomG-nominal deterministic Muller automata}
+\input{gndma}
 
-\section{Example: peer-to-peer system}\label{sec:example}
-\input{example}
+\section{HDG-automata}
+\input{hdgraphs}
 
-\section{Background}\label{sec:background}\input{background}
-
-\section{Nominal \texorpdfstring{$\omega$}{omega}-regular languages}\label{sec:languages}\input{languages}
-
-
-\section{Finite automata}\label{sec:hd-automata}
-\input{hd-automata}
-
-
-\section{Synchronized product and boolean operations}\label{sec:sync-product}
-\input{synchronized-product}
+%\section{Introduction}\label{sec:introduction}\input{introduction}
 %
-\input{boolean-operations-decidability}
-
-\section{Ultimately-periodic words}\label{sec:up-words}\input{up-words}
-
-\section{Conclusions}\label{sec:conclusions}
-\input{future-work}
-\input{related-work}
-
-\paragraph{Acknowledgements.} The authors thank Nikos Tzevelekos, Emilio Tuosto and Gianluca Mezzetti for several fruitful discussions related to nominal automata.
+%\section{Example: peer-to-peer system}\label{sec:example}
+%\input{example}
+%
+%\section{Background}\label{sec:background}\input{background}
+%
+%\section{Nominal \texorpdfstring{$\omega$}{omega}-regular languages}\label{sec:languages}\input{languages}
+%
+%
+%\section{Finite automata}\label{sec:hd-automata}
+%\input{hd-automata}
+%
+%
+%\section{Synchronized product and boolean operations}\label{sec:sync-product}
+%\input{synchronized-product}
+%%
+%\input{boolean-operations-decidability}
+%
+%\section{Ultimately-periodic words}\label{sec:up-words}\input{up-words}
+%
+%\section{Conclusions}\label{sec:conclusions}
+%\input{future-work}
+%\input{related-work}
+%
+%\paragraph{Acknowledgements.} The authors thank Nikos Tzevelekos, Emilio Tuosto and Gianluca Mezzetti for several fruitful discussions related to nominal automata.
 
 \bibliographystyle{splncs}
 \bibliography{bibliography}

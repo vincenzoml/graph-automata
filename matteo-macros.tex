@@ -29,6 +29,25 @@
 
 \newcommand{\tstr}{\mathcal{T}}
 
+% Nominal notation
+\newcommand{\nomG}{\ensuremath{\mathbf{G}}}
+\newcommand{\eqsub}{\subseteq_{eq}}
+\newcommand{\reg}[1]{\Vert #1 \Vert}
+%\newcommand{\edge}[2]{#1\!-\!#2}
+
+% Relation symbols
+\newcommand{\subrel}{\sqsubseteq}
+
+% Graph notation
+\newcommand{\edge}[2]{
+\begin{tikzpicture}[baseline,node distance=1em]
+\tikzstyle{vertex} = [anchor=base,circle,draw=black,fill=none,thick,inner sep=0,outer sep=0,minimum height=2em] 
+
+\node[vertex] (1) {\ensuremath{#1}};
+\node[vertex,right=of 1] (2) {\ensuremath{#2}};
+\path (1) edge (2);
+\end{tikzpicture}
+}
 
 % Symbols for ultimately periodic words
 \newcommand{\regPerm}{I}
